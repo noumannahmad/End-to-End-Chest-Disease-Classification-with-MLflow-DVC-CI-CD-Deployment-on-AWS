@@ -19,9 +19,6 @@ This project provides a comprehensive end-to-end machine learning pipeline for *
 
 ## 🚀 MLflow Setup
 
-- [MLflow Documentation](https://mlflow.org/docs/latest/index.html)  
-- [MLflow Tutorial Playlist](https://youtube.com/playlist?list=PLkz_y24mlSJZrqiZ4_cLUiP0CBN5wFmTb)
-
 ### Launch MLflow UI
 
 \`\`\`bash
