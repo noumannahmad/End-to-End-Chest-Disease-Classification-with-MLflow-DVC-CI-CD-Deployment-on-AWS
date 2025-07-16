@@ -1,100 +1,131 @@
 
-# End-to-End Chest Disease Classification with MLflow, DVC & CI/CD Deployment on AWS
+# 🧠 End-to-End Chest Cancer Classification with MLflow, DVC & AWS CI/CD
 
-## 📦 Project Overview
+This project demonstrates a full machine learning workflow for **chest cancer classification**, integrating MLflow for experiment tracking, DVC for pipeline/data versioning, and GitHub Actions for automated deployment to AWS infrastructure.
 
-This project provides a comprehensive end-to-end machine learning pipeline for **chest disease classification** using **MLflow** for experiment tracking, **DVC** for data and pipeline versioning, and **GitHub Actions with AWS** for automated CI/CD deployment.
+---
 
-## ⚙️ Project Workflow
+## 🔁 Workflow Overview
 
-1. Update `config.yaml` with your global settings.
-2. Optionally update `secrets.yaml` with API keys or sensitive credentials.
-3. Modify `params.yaml` for hyperparameters and runtime configurations.
-4. Set or update the `entity` (e.g., your experiment name).
-5. Update the `ConfigurationManager` class inside `src/config/`.
-6. Refactor or build necessary components (preprocessing, training, etc.).
-7. Assemble or modify the pipeline logic.
-8. Update the `main.py` script to reflect your new workflow.
-9. Modify or recreate `dvc.yaml` to match pipeline stages.
+1. Update `config.yaml` – general settings
+2. (Optional) Update `secrets.yaml` – credentials
+3. Modify `params.yaml` – hyperparameters
+4. Set experiment `entity`
+5. Update configuration manager in `src/config`
+6. Build or refine pipeline components
+7. Assemble pipeline logic
+8. Refactor `main.py`
+9. Edit or recreate `dvc.yaml` for DVC pipeline stages
+
+---
 
 ## 🚀 MLflow Setup
 
-### Launch MLflow UI
+- [MLflow Documentation](https://mlflow.org/docs/latest/index.html)
+- [MLflow YouTube Tutorial](https://youtube.com/playlist?list=PLkz_y24mlSJZrqiZ4_cLUiP0CBN5wFmTb)
 
-\`\`\`bash
+### Run MLflow UI
+
+```bash
 mlflow ui
-\`\`\`
+```
 
-### Use MLflow with Dagshub
+### Use with Dagshub
 
-To run with [Dagshub](https://dagshub.com/):
+[Dagshub](https://dagshub.com/)
 
-\`\`\`bash
+#### Sample Command
+
+```bash
+MLFLOW_TRACKING_URI=https://dagshub.com/entbappy/chest-Disease-Classification-MLflow-DVC.mlflow \
+MLFLOW_TRACKING_USERNAME=entbappy \
+MLFLOW_TRACKING_PASSWORD=6824692c47a4545eac5b10041d5c8edbcef0 \
+python script.py
+```
+
+#### Set Environment Variables
+
+```bash
 export MLFLOW_TRACKING_URI=https://dagshub.com/entbappy/chest-Disease-Classification-MLflow-DVC.mlflow
 export MLFLOW_TRACKING_USERNAME=entbappy 
 export MLFLOW_TRACKING_PASSWORD=6824692c47a369aa6f9353c5b10041d5c8edbcef0
+```
 
-python script.py
-\`\`\`
+---
 
 ## 📁 DVC Commands
 
-\`\`\`bash
-dvc init     # Initialize DVC in the project
-dvc repro    # Reproduce pipeline stages
-dvc dag      # Visualize the pipeline
-\`\`\`
+```bash
+dvc init       # Initialize DVC
+dvc repro      # Reproduce pipeline
+dvc dag        # Visualize pipeline stages
+```
 
-## 🧪 MLflow vs DVC (Quick Comparison)
+---
 
-| Feature                  | MLflow                        | DVC                         |
-|--------------------------|-------------------------------|-----------------------------|
-| Use-case                 | Production-grade pipelines     | Lightweight POCs            |
-| Core focus               | Experiment tracking, registry | Data & pipeline versioning  |
-| Model management         | Yes                           | No                          |
-| Orchestration support    | Partial                       | Yes                         |
-| Ideal for                | Full ML lifecycle             | Quick prototyping           |
+## 🔍 MLflow vs. DVC – Quick Comparison
 
-## ☁️ CI/CD Deployment on AWS with GitHub Actions
+| Feature                | MLflow                         | DVC                            |
+|------------------------|--------------------------------|--------------------------------|
+| Use-case               | Production-grade ML pipelines  | Lightweight prototyping        |
+| Tracks experiments     | ✅                             | ✅                             |
+| Pipeline orchestration | ⚠️ Partial                     | ✅                             |
+| Model registry         | ✅                             | ❌                             |
+| Ideal for              | Deployment, tuning             | Data + pipeline versioning     |
 
-### 1. AWS IAM Setup
-- Create an IAM user with:
-  - **EC2 full access**
-  - **ECR full access**
+---
 
-### 2. Create an ECR Repository
-- Example:  
-  \`566373416292.dkr.ecr.us-east-1.amazonaws.com/chest-app\`
+## ☁️ AWS CI/CD Deployment via GitHub Actions
 
-### 3. Launch EC2 Instance
-- Recommended: **Ubuntu Server**
+### 1. Login to AWS Console
 
-### 4. Install Docker on EC2
+### 2. Create IAM User for Deployment
 
-\`\`\`bash
+**Permissions:**
+- EC2 (for virtual machine access)
+- ECR (for Docker image repository)
+
+**IAM Policies:**
+- `AmazonEC2ContainerRegistryFullAccess`
+- `AmazonEC2FullAccess`
+
+### 3. Create ECR Repository
+
+- Example URI:  
+  `566373416292.dkr.ecr.us-east-1.amazonaws.com/chicken`
+
+### 4. Launch an EC2 Instance (Ubuntu Recommended)
+
+### 5. Install Docker on EC2
+
+```bash
 sudo apt-get update -y
 sudo apt-get upgrade -y
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 sudo usermod -aG docker ubuntu
 newgrp docker
-\`\`\`
+```
 
-### 5. Configure EC2 as Self-hosted GitHub Runner
-- Go to: \`GitHub Repo → Settings → Actions → Runners → New Self-hosted Runner\`
-- Follow on-screen instructions
+### 6. Configure EC2 as a Self-Hosted GitHub Runner
 
-### 6. Set GitHub Secrets
+- GitHub → Repo Settings → Actions → Runners → New Self-Hosted Runner
+- Select OS and follow CLI instructions
 
-| Secret Key              | Value                                       |
-|-------------------------|---------------------------------------------|
-| \`AWS_ACCESS_KEY_ID\`     | *your access key*                           |
-| \`AWS_SECRET_ACCESS_KEY\` | *your secret key*                           |
-| \`AWS_REGION\`            | \`us-east-1\` or appropriate region           |
-| \`AWS_ECR_LOGIN_URI\`     | \`566373416292.dkr.ecr.us-east-1.amazonaws.com\` |
-| \`ECR_REPOSITORY_NAME\`   | \`chest-app\`                                 |
+### 7. Setup GitHub Secrets
 
-## ✅ Final Notes
+```env
+AWS_ACCESS_KEY_ID=your_aws_key
+AWS_SECRET_ACCESS_KEY=your_secret_key
+AWS_REGION=us-east-1
+AWS_ECR_LOGIN_URI=566373416292.dkr.ecr.ap-south-1.amazonaws.com
+ECR_REPOSITORY_NAME=simple-app
+```
 
-- This setup ensures full experiment traceability, lightweight version control, and automatic deployment via CI/CD.
-- For production-ready systems, replace placeholder values and rotate credentials periodically.
+---
+
+## ✅ Summary
+
+- MLflow enables robust experiment tracking and model lifecycle management.
+- DVC offers lightweight data/pipeline orchestration and versioning.
+- GitHub Actions + AWS delivers a scalable and repeatable CI/CD process for deployment.
