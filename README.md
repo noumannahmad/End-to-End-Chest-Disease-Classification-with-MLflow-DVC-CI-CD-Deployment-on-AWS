@@ -21,8 +21,6 @@ This project demonstrates a full machine learning workflow for **chest cancer cl
 
 ## 🚀 MLflow Setup
 
-- [MLflow Documentation](https://mlflow.org/docs/latest/index.html)
-- [MLflow YouTube Tutorial](https://youtube.com/playlist?list=PLkz_y24mlSJZrqiZ4_cLUiP0CBN5wFmTb)
 
 ### Run MLflow UI
 
