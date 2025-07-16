@@ -1,5 +1,5 @@
 
-# 🧠 End-to-End Chest Cancer Classification with MLflow, DVC & AWS CI/CD
+# 🧠 End-to-End Chest Disease Classification with MLflow, DVC & CI/CD Deployment on AWS
 
 This project demonstrates a full machine learning workflow for **chest cancer classification**, integrating MLflow for experiment tracking, DVC for pipeline/data versioning, and GitHub Actions for automated deployment to AWS infrastructure.
 
